@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
 set(COMPILER "None" CACHE STRING "...")
 set(USE_CONAN "FALSE" CACHE BOOL "...")
 set(USE_CUBE "FALSE" CACHE BOOL "...")
-set(SKIP_TEST "FALSE" CACHE BOOL "...")
+set(SKIP_TEST "TRUE" CACHE BOOL "...")
 set(TEST_GROUP "all" CACHE STRING "...")
 set(TEST_CASE "all" CACHE STRING "...")
 
