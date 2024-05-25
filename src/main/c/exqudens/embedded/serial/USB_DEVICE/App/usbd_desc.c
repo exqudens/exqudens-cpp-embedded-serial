@@ -376,9 +376,9 @@ uint8_t * USBD_HS_USR_BOSDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
   */
 static void Get_SerialNum(void)
 {
-  uint32_t deviceserial0;
-  uint32_t deviceserial1;
-  uint32_t deviceserial2;
+  uint32_t deviceserial0 = *(uint32_t *) DEVICE_ID1;
+  uint32_t deviceserial1 = *(uint32_t *) DEVICE_ID2;
+  uint32_t deviceserial2 = *(uint32_t *) DEVICE_ID3;
 
   deviceserial0 += deviceserial2;
 

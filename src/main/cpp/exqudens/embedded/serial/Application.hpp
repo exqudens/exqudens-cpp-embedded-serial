@@ -8,14 +8,25 @@ namespace exqudens::embedded::serial {
 
         private:
 
-            inline static IHardware* hal = nullptr;
-            inline static bool running = true;
+            IHardware* hal = nullptr;
+            bool running = true;
 
         public:
 
-            static void setRunning(bool running);
+            static Application& getInstance();
 
-            static int run();
+            Application& setRunning(bool value);
+
+            Application& setHal(IHardware* value = nullptr);
+            IHardware* getHal();
+
+            int run();
+
+        private:
+
+            Application();
+
+            ~Application();
 
     };
 

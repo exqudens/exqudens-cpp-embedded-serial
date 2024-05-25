@@ -17,6 +17,14 @@ namespace exqudens::embedded::serial {
         throw std::runtime_error("Not implemented!");
     }
 
+    void Hardware::setUsbTransferFunction(const std::function<void(uint8_t* buffer, uint32_t* length)>& value) {
+        throw std::runtime_error("Not implemented!");
+    }
+
+    std::function<void(uint8_t* buffer, uint32_t* length)> Hardware::getUsbTransferFunction() {
+        throw std::runtime_error("Not implemented!");
+    }
+
     Hardware::~IHardware() noexcept = default;
 
 }

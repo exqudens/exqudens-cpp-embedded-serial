@@ -2,11 +2,32 @@
 #include <stdexcept>
 
 #include "exqudens/embedded/serial/Hardware.hpp"
+#include "exqudens/embedded/serial/Application.hpp"
 #include "main.h"
+#include "exqudens_embedded_serial.h"
+#include "usbd_cdc_if.h"
+
+extern "C" void exqudens_embedded_serial_usb_transfer(uint8_t* buffer, uint32_t* length) {
+    std::function<void(uint8_t*, uint32_t*)> usbTransferFunction = exqudens::embedded::serial::Application::getInstance().getHal()->getUsbTransferFunction();
+    if (usbTransferFunction) {
+        usbTransferFunction(buffer, length);
+    }
+}
 
 namespace exqudens::embedded::serial {
 
     int Hardware::mainInit() {
+        if (!usbTransferFunction) {
+            usbTransferFunction = [](uint8_t* buffer, uint32_t* length) {
+                uint32_t size = *length;
+                for (uint32_t i = 0; i < size; i++) {
+                    if (buffer[i] >= 'a' && buffer[i] <= 'z') {
+                        buffer[i] -= ('a' - 'A');
+                    }
+                }
+                CDC_Transmit_HS(buffer, size);
+            };
+        }
         return HAL_Main_Init();
     }
 
@@ -24,6 +45,14 @@ namespace exqudens::embedded::serial {
         } else {
             throw std::runtime_error("Unsupported led: " + std::to_string(led));
         }
+    }
+
+    void Hardware::setUsbTransferFunction(const std::function<void(uint8_t* buffer, uint32_t* length)>& value) {
+        usbTransferFunction = value;
+    }
+
+    std::function<void(uint8_t* buffer, uint32_t* length)> Hardware::getUsbTransferFunction() {
+        return usbTransferFunction;
     }
 
     Hardware::~Hardware() noexcept = default;

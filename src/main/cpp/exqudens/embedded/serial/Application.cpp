@@ -6,8 +6,23 @@
 
 namespace exqudens::embedded::serial {
 
-    void Application::setRunning(bool running) {
-        Application::running = running;
+    Application& Application::getInstance() {
+        static Application instance;
+        return instance;
+    }
+
+    Application& Application::setRunning(bool value) {
+        running = value;
+        return *this;
+    }
+
+    Application& Application::setHal(IHardware* value) {
+        hal = value;
+        return *this;
+    }
+
+    IHardware* Application::getHal() {
+        return hal;
     }
 
     int Application::run() {
@@ -54,5 +69,9 @@ namespace exqudens::embedded::serial {
             return EXIT_FAILURE;
         }
     }
+
+    Application::Application() = default;
+
+    Application::~Application() = default;
 
 }
