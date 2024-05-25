@@ -8,9 +8,12 @@
 #include "usbd_cdc_if.h"
 
 extern "C" void exqudens_embedded_serial_usb_transfer(uint8_t* buffer, uint32_t* length) {
-    std::function<void(uint8_t*, uint32_t*)> usbTransferFunction = exqudens::embedded::serial::Application::getInstance().getHal()->getUsbTransferFunction();
-    if (usbTransferFunction) {
-        usbTransferFunction(buffer, length);
+    if (exqudens::embedded::serial::Application::getInstance().getHal()) {
+        std::function<void(uint8_t*, uint32_t*)> usbTransferFunction = {};
+        usbTransferFunction = exqudens::embedded::serial::Application::getInstance().getHal()->getUsbTransferFunction();
+        if (usbTransferFunction) {
+            usbTransferFunction(buffer, length);
+        }
     }
 }
 

@@ -16,12 +16,12 @@ namespace exqudens::embedded::serial {
         return *this;
     }
 
-    Application& Application::setHal(IHardware* value) {
+    Application& Application::setHal(const std::shared_ptr<IHardware> value) {
         hal = value;
         return *this;
     }
 
-    IHardware* Application::getHal() {
+    std::shared_ptr<IHardware> Application::getHal() {
         return hal;
     }
 
@@ -30,7 +30,7 @@ namespace exqudens::embedded::serial {
             bool halDeleteRequired = false;
 
             if (hal == nullptr) {
-                hal = new Hardware();
+                hal = std::shared_ptr<Hardware>(new Hardware());
                 halDeleteRequired = true;
             }
 
@@ -38,7 +38,7 @@ namespace exqudens::embedded::serial {
 
             if (result != EXIT_SUCCESS) {
                 if (halDeleteRequired) {
-                    delete hal;
+                    hal.reset();
                     hal = nullptr;
                 }
                 return result;
@@ -59,7 +59,7 @@ namespace exqudens::embedded::serial {
             } while (running);
 
             if (halDeleteRequired) {
-                delete hal;
+                hal.reset();
                 hal = nullptr;
             }
 

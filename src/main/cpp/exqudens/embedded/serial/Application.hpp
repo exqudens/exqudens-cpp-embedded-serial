@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "exqudens/embedded/serial/IHardware.hpp"
 
 namespace exqudens::embedded::serial {
@@ -8,7 +10,7 @@ namespace exqudens::embedded::serial {
 
         private:
 
-            IHardware* hal = nullptr;
+            std::shared_ptr<IHardware> hal = nullptr;
             bool running = true;
 
         public:
@@ -17,8 +19,8 @@ namespace exqudens::embedded::serial {
 
             Application& setRunning(bool value);
 
-            Application& setHal(IHardware* value = nullptr);
-            IHardware* getHal();
+            Application& setHal(const std::shared_ptr<IHardware> value = nullptr);
+            std::shared_ptr<IHardware> getHal();
 
             int run();
 
