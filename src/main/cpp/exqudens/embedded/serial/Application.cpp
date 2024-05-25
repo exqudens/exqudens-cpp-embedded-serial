@@ -31,6 +31,7 @@ namespace exqudens::embedded::serial {
 
             if (hal == nullptr) {
                 hal = new Hardware();
+                halDeleteRequired = true;
             }
 
             int result = hal->mainInit();
